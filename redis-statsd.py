@@ -151,5 +151,5 @@ while True:
                 )
 
     out_sock.close()
-    time.sleep(10)
+    time.sleep(int(args.period))
 
