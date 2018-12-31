@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 import socket
 import sys
 import time
@@ -12,6 +13,7 @@ parser.add_argument('--redis-host', dest='redis_host', type=str, default='localh
 parser.add_argument('--statsd-host', dest='statsd_host', type=str, default='localhost:8125', help='The address and port of the StatsD host to connect to')
 parser.add_argument('--global-tags', dest='global_tags', type=str, help='Global tags to add to all metrics')
 parser.add_argument('--no-tags', dest='tags', action='store_false', help='Disable tags for use with DogStatsD')
+parser.add_argument('--password', dest='password', type=str, default=os.getenv("REDIS_PASSWORD"), help='Password for redis authentication')
 
 args = parser.parse_args()
 
@@ -103,6 +105,10 @@ while True:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     (redis_host, redis_port) = args.redis_host.split(':')
     s.connect((redis_host, int(redis_port)))
+
+    if args.password:
+        s.send("AUTH %s\n" % args.password)
+
     s.send("INFO\n")
 
     stats = {}
