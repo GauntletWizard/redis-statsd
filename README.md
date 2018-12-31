@@ -45,5 +45,7 @@ optional arguments:
                         The port of the StatsD host to connect to
   --statsd-port STATSD_PORT
                         The port of the Redis port to connect to
+  --global-tags TAG1:VAL1,TAG2:VAL2,...
+                        Global tags to add to all metrics
   --no-tags             Disable tags for use with DogStatsD
 ```
